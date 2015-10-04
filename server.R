@@ -134,21 +134,6 @@ shinyServer(
           #Limit calories from all food items to at most 30% of the total calories
           #bvector <- c(min_req, limit_calories_all_foods_vector)
           
-          ### The ci vector --
-          ### xi * kcal/g-i <= 0.3 * Calories_total 
-          ### xi <= ( 0.3 * Calories_total ) / ( kcal/g-i )
-          ### xi <= ci
-          ### ci = ( 0.3 * Calories_total ) / ( kcal/g-i )
-          
-          # ci_vector <- (0.3 * Calories)/nutrients["kcal",] 
-          # 
-          # bvector <- 
-          #         c( Protein       + ci_vector %*% nutrients[1,], 
-          #            Fat           + ci_vector %*% nutrients[2,],
-          #            Carbohydrates + ci_vector %*% nutrients[3,], 
-          #            Calories      + ci_vector %*% nutrients[4,]
-          #         )
-          
           bvector <- min_req
           
           ### const.dir
@@ -176,12 +161,7 @@ shinyServer(
           
           ### Convertin grams output to # of units to purchase ##
           ### unfinished
-          
-          
-          # simplex(a = obj.func, A2 = nutrients, b2 = min_req, maxi = FALSE)
-          # simplex(a, A2 = A2, b2 = b2, maxi = FALSE)
-          
-          
+
           ### Output total cost of weekly groceries
           ### price.per.g * g recommended (at selected_indices)
           
@@ -191,7 +171,6 @@ shinyServer(
           #       -divide numeric amount of units by numeric amount of one item --># of items
           #       -then round 
           
-          setwd("C:/Users/Bhavna/Google Drive/MedHacks2015/Data/")
           cost.units <-
             read.csv("Top-Food-Items-Cost-and-Nutritional-Facts-Cost-of-Food-Items-raw.csv")
           
@@ -219,13 +198,7 @@ shinyServer(
           #with(outputConv, Price.per.g * Conversion.to.g)
           
           LP$solution / outputConv$Conversion.to.g  
-          
-          
-          
-          
-          
-          
-          
+
 
                 #output$inputValue <- renderPrint({input$sizeFamily})
                 #output$inputValue2 <- renderPrint(2*{input$numChild})
