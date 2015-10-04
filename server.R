@@ -35,9 +35,9 @@ shinyServer(
           #numericInput
           
           #example answers from user
-          adult.males   <- input$numAdultm
-          adult.females <- input$numAdultf
-          children      <- input$numChild
+          # mfc   <- reactiveValues(ppl = c(input$numAdultm,input$numAdultf,input$numChild))
+#           adult.females <- input$numAdultf
+#           children      <- input$numChild
           
           selected_indices <- food %in% selected
           selected_food <- food[selected_indices]
@@ -58,7 +58,6 @@ shinyServer(
           
           ### Nutritional Data for Food Items ###
           ### Download it and load it into R read.csv
-          setwd("C:/Users/Bhavna/Google Drive/MedHacks2015/Data")
           nutrition0 <- read.csv("nutrition.csv")
           #trim the trialing 70 empty rows
           nutrition  <- nutrition0[1:30,]
@@ -109,21 +108,21 @@ shinyServer(
           ### b2, >= constraints, RHS ###
           ###############################
           
-          Protein <- adult.males*nutritional_requirements$protein[1] + 
-            adult.females*nutritional_requirements$protein[2] +
-            children*nutritional_requirements$protein[3]
+          Protein <- input$numAdultm*nutritional_requirements$protein[1] + 
+            input$numAdultf*nutritional_requirements$protein[2] +
+            input$numChild*nutritional_requirements$protein[3]
           
-          Fat <- adult.males*nutritional_requirements$fat[1] +
-            adult.females*nutritional_requirements$fat[2] +
-            children*nutritional_requirements$fat[3]
+          Fat <- input$numAdultm*nutritional_requirements$fat[1] +
+            input$numAdultf*nutritional_requirements$fat[2] +
+            input$numChild*nutritional_requirements$fat[3]
           
-          Carbohydrates <- adult.males*nutritional_requirements$carbohydrates[1] +
-            adult.females*nutritional_requirements$carbohydrates[2] +
-            children*nutritional_requirements$carbohydrates[3]
+          Carbohydrates <- input$numAdultm*nutritional_requirements$carbohydrates[1] +
+            input$numAdultf*nutritional_requirements$carbohydrates[2] +
+            input$numChild*nutritional_requirements$carbohydrates[3]
           
-          Calories <- adult.males*nutritional_requirements$calories[1] +
-            adult.females*nutritional_requirements$calories[2] +
-            children*nutritional_requirements$calories[3]
+          Calories <- input$numAdultm*nutritional_requirements$calories[1] +
+            input$numAdultf*nutritional_requirements$calories[2] +
+            input$numChild*nutritional_requirements$calories[3]
           
           ####################################################
           min_req <- as.vector( c(Protein, Fat, Carbohydrates, Calories) ) 
@@ -203,7 +202,8 @@ shinyServer(
                 #output$inputValue <- renderPrint({input$sizeFamily})
                 #output$inputValue2 <- renderPrint(2*{input$numChild})
                 output$inputValue3 <- renderPrint({input$food})
-                output$prediction <- renderPrint(cat('Heehee\nhe'))
+          output$prediction <- renderText('beep')
+                # output$prediction <- renderPrint(cat('Heehee\nhe'))
                 #output$prediction2 <- renderPrint('Heehee2')
                 #output$oid2 <- renderPrint({input$id2})
                 #output$odate <- renderPrint({input$date})
