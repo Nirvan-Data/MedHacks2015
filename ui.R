@@ -31,15 +31,12 @@ shinyUI(pageWithSidebar( #gives page format as page with sidebar
                         ),
                         
                 
-                ##########################
                     ### Main Panel ###
-                ##########################
                 mainPanel( 
                         #h3('Main Panel text'),
                         #code('some code'),
                         h2('An app to help you eat healthy while on a budget!'),
                         h4('Here\'s what you picked:'),
-                        #picked <- paste(inputValue3[1], inputValue3[2], sep=",")
                         verbatimTextOutput("inputValue3"),
                         h3("Recommended Meal Plan:"),
                         #h4("You entered..."),
