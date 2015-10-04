@@ -23,16 +23,7 @@ shinyServer(
 #           beep <- reactive({input$foodie})
 #           selected <- beep()
           # selected <- food
-          observe({
-            if(input$action>0){
-              beep<-renderText({
-                input$foodies
-              })
-              selected<-unlist(strsplit(beep(), split=" "))
-              print(selected)
-            }
-          })
-  
+
           
           
           
@@ -44,11 +35,13 @@ shinyServer(
           adult.males <- reactive({input$numAdultm})
           adult.females <- reactive({input$numAdultf})
           children <- reactive({input$numChild})
+          selected<-reactive({input$foodies})
 #           adult.females <- input$numAdultf
 #           children      <- input$numChild
           observeEvent(input$action,{
-            L <- length(selected) # number of food items selected
-          selected_indices <- food %in% selected
+            
+            L <- length(selected()) # number of food items selected
+          selected_indices <- food %in% selected()
           selected_food <- food[selected_indices]
           
 
@@ -212,7 +205,7 @@ shinyServer(
 
                 #output$inputValue <- renderPrint({input$sizeFamily})
                 #output$inputValue2 <- renderPrint(2*{input$numChild})
-                output$inputValue3 <- renderPrint({input$food})
+                output$inputValue3 <- renderText({input$foodies})
                 print(LP$solution)
                 print(x)
                 print(outputConv$Food.Item)
