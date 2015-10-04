@@ -12,13 +12,13 @@ shinyServer(
           cost <- c(.5, .13, .85, .70, .33, .33, .29, .1, .39, .16, .17, .19, .83,
                     .6, .22, .44, 1.18, .52, .55, .94, .53, .49, 1.00, .15, 1.97,
                     .88, .19, .77, .39, .09) / 100
-          
+          library(dplyr)
           ################################################################################
           ### INPUTS FROM USER INTERFACE
           #1) Which foods do you want to include in your list? 
           #*** what does this input look like on my end? checkBoxGroupInput?
           ################################################################################
-          
+ 
           #example selection from user
           selected <- food
           #selected <- c("bananas", 
@@ -35,13 +35,17 @@ shinyServer(
           #numericInput
 
           #example answers from user
-          # mfc   <- reactiveValues(ppl = c(input$numAdultm,input$numAdultf,input$numChild))
+
+          adult.males <- reactive({input$numAdultm})
+          adult.females <- reactive({input$numAdultf})
+          children <- reactive({input$numChild})
 #           adult.females <- input$numAdultf
 #           children      <- input$numChild
-          
+          observeEvent(input$action,{
           selected_indices <- food %in% selected
           selected_food <- food[selected_indices]
           
+
           ### Nutritional Requirements ###
           adult_male <- c(64, 67, 340, 3018)
           adult_female <- c(44, 50, 253, 2253)
@@ -108,21 +112,21 @@ shinyServer(
           ### b2, >= constraints, RHS ###
           ###############################
           
-          Protein <- input$numAdultm*nutritional_requirements$protein[1] + 
-            input$numAdultf*nutritional_requirements$protein[2] +
-            input$numChild*nutritional_requirements$protein[3]
+          Protein <- adult.males()*nutritional_requirements$protein[1] + 
+            adult.females()*nutritional_requirements$protein[2] +
+            children()*nutritional_requirements$protein[3]
           
-          Fat <- input$numAdultm*nutritional_requirements$fat[1] +
-            input$numAdultf*nutritional_requirements$fat[2] +
-            input$numChild*nutritional_requirements$fat[3]
+          Fat <- adult.males()*nutritional_requirements$fat[1] +
+            adult.females()*nutritional_requirements$fat[2] +
+            children()*nutritional_requirements$fat[3]
           
-          Carbohydrates <- input$numAdultm*nutritional_requirements$carbohydrates[1] +
-            input$numAdultf*nutritional_requirements$carbohydrates[2] +
-            input$numChild*nutritional_requirements$carbohydrates[3]
+          Carbohydrates <- adult.males()*nutritional_requirements$carbohydrates[1] +
+            adult.females()*nutritional_requirements$carbohydrates[2] +
+            children()*nutritional_requirements$carbohydrates[3]
           
-          Calories <- input$numAdultm*nutritional_requirements$calories[1] +
-            input$numAdultf*nutritional_requirements$calories[2] +
-            input$numChild*nutritional_requirements$calories[3]
+          Calories <- adult.males()*nutritional_requirements$calories[1] +
+            adult.females()*nutritional_requirements$calories[2] +
+            children()*nutritional_requirements$calories[3]
           
           ####################################################
           min_req <- as.vector( c(Protein, Fat, Carbohydrates, Calories) ) 
@@ -177,7 +181,7 @@ shinyServer(
           names(cost.units)
           
           
-          library(dplyr)
+          
           outputConv <- select(cost.units, 
                                Food.Item, 
                                Price.per.g, 
@@ -185,7 +189,7 @@ shinyServer(
                                Unit, 
                                Conversion.to.g)
           
-          head(outputConv)
+          print(head(outputConv$Food.Item))
           
           
           
@@ -196,16 +200,19 @@ shinyServer(
           #1) Cost per original unit
           #with(outputConv, Price.per.g * Conversion.to.g)
           
-          LP$solution / outputConv$Conversion.to.g  
-
+          x <- LP$solution / outputConv$Conversion.to.g  
+    
 
 
                 #output$inputValue <- renderPrint({input$sizeFamily})
                 #output$inputValue2 <- renderPrint(2*{input$numChild})
                 output$inputValue3 <- renderPrint({input$food})
-
-          output$prediction <- renderText('beep')
+                print(LP$solution)
+                print(x)
+                print(outputConv$Food.Item)
+          output$prediction <- renderPrint(outputConv$Food.Item(which( x == max(x) )))
                 # output$prediction <- renderPrint(cat('Heehee\nhe'))
+})
 
         }
 )

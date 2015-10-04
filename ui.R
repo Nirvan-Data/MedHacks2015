@@ -27,13 +27,13 @@ shinyUI(pageWithSidebar( #gives page format as page with sidebar
                                                                       'cheese'='cheese','peanut butter'='peanut butter',
                                                                       'milk'='milk')
                         ), 
-                        submitButton('Enter')
+                        actionButton('action','Enter')
                         ),
                         
                 
                     ### Main Panel ###
                 mainPanel( 
-                        #h3('Main Panel text'),
+                        #h3('Mai                                                                                                                                                                                                 n Panel text'),
                         #code('some code'),
                         h2('An app to help you eat healthy while on a budget!'),
                         h4('Here\'s what you picked:'),
