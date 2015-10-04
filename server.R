@@ -58,7 +58,6 @@ shinyServer(
           
           ### Nutritional Data for Food Items ###
           ### Download it and load it into R read.csv
-          setwd("C:/Users/Bhavna/Google Drive/MedHacks2015/Data")
           nutrition0 <- read.csv("nutrition.csv")
           #trim the trialing 70 empty rows
           nutrition  <- nutrition0[1:30,]
@@ -71,9 +70,7 @@ shinyServer(
           
           A2full <- t(nutrition_numbers)
           
-          
-          
-          
+        
           ################################################################################
           ### Linear Program ###
           ### INPUTS FOR LP ###
@@ -84,25 +81,8 @@ shinyServer(
           
           ### A2, coefficients for >= constraints
           nutrients <- A2full[,selected_indices] 
-          
-          ########################################
-          ### Restrict the total amount of rice ###
-          ### kcal_rice * grams_rice <= 0.4 * Calories
-          ########################################
-          # kcal_rice <- A2full["kcal","rice"]
-          # rice_constraint <- rep(0, L)
-          # rice_constraint[2] <- kcal_rice 
-          # Amatrix <- rbind( nutrients, rice_constraint) 
-          
-          ### Restric the Calories from any one item to be at most 30% of the total calories
-          ### NEED TO DO A VARIABLE SUBSTITUTION TO ENCAPSULATE THIS CONSTRAINT ###
-          # kcal_foodItems <- A2full["kcal",]
-          # limit_calories_all_foods_vector <- rep( 0.3 * Calories, 30)
-          # limit_calories_all_foods_matrix <- sapply( as.data.frame( diag(L) ), function(x) x * kcal_foodItems )
-          # 
-          # Amatrix <- rbind( limit_calories_all_foods_matrix, nutrients)
-          
-          
+  
+
           Amatrix <- nutrients
           
           ###############################
@@ -127,12 +107,9 @@ shinyServer(
           
           ####################################################
           min_req <- as.vector( c(Protein, Fat, Carbohydrates, Calories) ) 
-          
-          #Limit Rice calories to at most 20%
-          #bvector <- c( min_req, 0.2 * Calories) 
+
           
           #Limit calories from all food items to at most 30% of the total calories
-          #bvector <- c(min_req, limit_calories_all_foods_vector)
           
           bvector <- min_req
           
@@ -151,13 +128,7 @@ shinyServer(
           LP$opt
           LP$solution
           ############################################################################################
-          
-          
-          
-          
-          
-          
-          
+
           
           ### Convertin grams output to # of units to purchase ##
           ### unfinished
