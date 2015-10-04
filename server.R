@@ -20,16 +20,21 @@ shinyServer(
           ################################################################################
  
           #example selection from user
-          selected <- food
-          #selected <- c("bananas", 
-          #               "bagels", 
-          #               "milk", 
-          #               "eggs", 
-          #               "cream.cheese", 
-          #               "peanut.butter",
-          #               "nuts")
+#           beep <- reactive({input$foodie})
+#           selected <- beep()
+          # selected <- food
+          observe({
+            if(input$action>0){
+              beep<-renderText({
+                input$foodies
+              })
+              selected<-unlist(strsplit(beep(), split=" "))
+              print(selected)
+            }
+          })
+  
           
-          L <- length(selected) # number of food items selected
+          
           
           #2) How many adult males, adult females, and children are you shopping for?
           #numericInput
@@ -42,6 +47,7 @@ shinyServer(
 #           adult.females <- input$numAdultf
 #           children      <- input$numChild
           observeEvent(input$action,{
+            L <- length(selected) # number of food items selected
           selected_indices <- food %in% selected
           selected_food <- food[selected_indices]
           
@@ -210,7 +216,7 @@ shinyServer(
                 print(LP$solution)
                 print(x)
                 print(outputConv$Food.Item)
-          output$prediction <- renderPrint(outputConv$Food.Item(which( x == max(x) )))
+          output$prediction <- renderPrint(outputConv$Food.Item[x != 0 ])
                 # output$prediction <- renderPrint(cat('Heehee\nhe'))
 })
 

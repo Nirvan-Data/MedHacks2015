@@ -11,7 +11,7 @@ shinyUI(pageWithSidebar( #gives page format as page with sidebar
                         numericInput('numAdultf', 'Adult Female',0),
                         numericInput('numChild', 'Child',0),
                         numericInput('budget','Food Budget ($/wk)',40),
-                        checkboxGroupInput('food','food choices (choose 2): ', c('bread'='bread','rice'= 'rice',
+                        checkboxGroupInput('foodies','food choices: ', c('bread'='bread','rice'= 'rice',
                                                                       'pasta'='pasta','cereals'='cereals',
                                                                       'bagels'='bagels','apple'='apple',
                                                                       'orange'='orange','banana'='banana',
