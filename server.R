@@ -34,147 +34,147 @@ shinyServer(
           #2) How many adult males, adult females, and children are you shopping for?
           #numericInput
           
-          #example answers from user
-          adult.males   <- input$numAdultm
-          adult.females <- input$numAdultf
-          children      <- input$numChild
-          
-          selected_indices <- food %in% selected
-          selected_food <- food[selected_indices]
-          
-          ### Nutritional Requirements ###
-          adult_male <- c(64, 67, 340, 3018)
-          adult_female <- c(44, 50, 253, 2253)
-          child <- c(29, 58, 236, 2097)
-          
-          nutritional_requirements <- 
-            as.data.frame(
-              rbind(adult_male,
-                    adult_female,
-                    child)
-            )
-          
-          names(nutritional_requirements) <- c("protein", "fat", "carbohydrates", "calories")
-          
-          ### Nutritional Data for Food Items ###
-          ### Download it and load it into R read.csv
-          nutrition0 <- read.csv("nutrition.csv")
-          #trim the trialing 70 empty rows
-          nutrition  <- nutrition0[1:30,]
-          #convert the "name" factor into a character vector
-          nutrition$name <- as.character( nutrition$name )
-          #remove everything but the nutrient data
-          nutrition_numbers <- select(nutrition, protein, fat, carb, kcal)/100
-          #assign food item to colnames
-          rownames(nutrition_numbers) <- food
-          
-          A2full <- t(nutrition_numbers)
-          
-        
-          ################################################################################
-          ### Linear Program ###
-          ### INPUTS FOR LP ###
-          ################################################################################
-          
-          ### objective function value 
-          obj.func <- cost[selected_indices]
-          
-          ### A2, coefficients for >= constraints
-          nutrients <- A2full[,selected_indices] 
-  
-
-          Amatrix <- nutrients
-          
-          ###############################
-          ### b2, >= constraints, RHS ###
-          ###############################
-          
-          Protein <- adult.males*nutritional_requirements$protein[1] + 
-            adult.females*nutritional_requirements$protein[2] +
-            children*nutritional_requirements$protein[3]
-          
-          Fat <- adult.males*nutritional_requirements$fat[1] +
-            adult.females*nutritional_requirements$fat[2] +
-            children*nutritional_requirements$fat[3]
-          
-          Carbohydrates <- adult.males*nutritional_requirements$carbohydrates[1] +
-            adult.females*nutritional_requirements$carbohydrates[2] +
-            children*nutritional_requirements$carbohydrates[3]
-          
-          Calories <- adult.males*nutritional_requirements$calories[1] +
-            adult.females*nutritional_requirements$calories[2] +
-            children*nutritional_requirements$calories[3]
-          
-          ####################################################
-          min_req <- as.vector( c(Protein, Fat, Carbohydrates, Calories) ) 
-
-          
-          #Limit calories from all food items to at most 30% of the total calories
-          
-          bvector <- min_req
-          
-          ### const.dir
-          inequality_directions <- c( rep( ">=", length( min_req ) ) )
-          ####################################################
-          
-          library(linprog)
-          LP <- solveLP( cvec = obj.func, bvec = bvector, Amat = nutrients, 
-                         const.dir = inequality_directions ) 
-          
-          
-          ############################################################################################
-          ### OUTPUT ###               
-          ############################################################################################
-          LP$opt
-          LP$solution
-          ############################################################################################
-
-          
-          ### Convertin grams output to # of units to purchase ##
-          ### unfinished
-
-          ### Output total cost of weekly groceries
-          ### price.per.g * g recommended (at selected_indices)
-          
-          ### Recode Output of Lin Prog
-          #1) Convert grams back to original units (* by )
-          #2) Convert original units into # of items to purchase and round UP/DOWN?
-          #       -divide numeric amount of units by numeric amount of one item --># of items
-          #       -then round 
-          
-          cost.units <-
-            read.csv("Top-Food-Items-Cost-and-Nutritional-Facts-Cost-of-Food-Items-raw.csv")
-          
-          class(cost.units)
-          names(cost.units)
-          
-          
-          library(dplyr)
-          outputConv <- select(cost.units, 
-                               Food.Item, 
-                               Price.per.g, 
-                               Quantity, 
-                               Unit, 
-                               Conversion.to.g)
-          
-          head(outputConv)
-          
-          
-          
-          outputConv$Price.per.g      
-          ### !!! if you update and load the updated dataset, this will be disasterous
-          ### outputConv <- mutate( outputConv, Price.per.g = Price.per.g/100)
-          
-          #1) Cost per original unit
-          #with(outputConv, Price.per.g * Conversion.to.g)
-          
-          LP$solution / outputConv$Conversion.to.g  
+           #example answers from user
+#           adult.males   <- input$numAdultm
+#           adult.females <- input$numAdultf
+#           children      <- input$numChild
+#           
+#           selected_indices <- food %in% selected
+#           selected_food <- food[selected_indices]
+#           
+#           ### Nutritional Requirements ###
+#           adult_male <- c(64, 67, 340, 3018)
+#           adult_female <- c(44, 50, 253, 2253)
+#           child <- c(29, 58, 236, 2097)
+#           
+#           nutritional_requirements <- 
+#             as.data.frame(
+#               rbind(adult_male,
+#                     adult_female,
+#                     child)
+#             )
+#           
+#           names(nutritional_requirements) <- c("protein", "fat", "carbohydrates", "calories")
+#           
+#           ### Nutritional Data for Food Items ###
+#           ### Download it and load it into R read.csv
+#           nutrition0 <- read.csv("nutrition.csv")
+#           #trim the trialing 70 empty rows
+#           nutrition  <- nutrition0[1:30,]
+#           #convert the "name" factor into a character vector
+#           nutrition$name <- as.character( nutrition$name )
+#           #remove everything but the nutrient data
+#           nutrition_numbers <- select(nutrition, protein, fat, carb, kcal)/100
+#           #assign food item to colnames
+#           rownames(nutrition_numbers) <- food
+#           
+#           A2full <- t(nutrition_numbers)
+#           
+#         
+#           ################################################################################
+#           ### Linear Program ###
+#           ### INPUTS FOR LP ###
+#           ################################################################################
+#           
+#           ### objective function value 
+#           obj.func <- cost[selected_indices]
+#           
+#           ### A2, coefficients for >= constraints
+#           nutrients <- A2full[,selected_indices] 
+#   
+# 
+#           Amatrix <- nutrients
+#           
+#           ###############################
+#           ### b2, >= constraints, RHS ###
+#           ###############################
+#           
+#           Protein <- adult.males*nutritional_requirements$protein[1] + 
+#             adult.females*nutritional_requirements$protein[2] +
+#             children*nutritional_requirements$protein[3]
+#           
+#           Fat <- adult.males*nutritional_requirements$fat[1] +
+#             adult.females*nutritional_requirements$fat[2] +
+#             children*nutritional_requirements$fat[3]
+#           
+#           Carbohydrates <- adult.males*nutritional_requirements$carbohydrates[1] +
+#             adult.females*nutritional_requirements$carbohydrates[2] +
+#             children*nutritional_requirements$carbohydrates[3]
+#           
+#           Calories <- adult.males*nutritional_requirements$calories[1] +
+#             adult.females*nutritional_requirements$calories[2] +
+#             children*nutritional_requirements$calories[3]
+#           
+#           ####################################################
+#           min_req <- as.vector( c(Protein, Fat, Carbohydrates, Calories) ) 
+# 
+#           
+#           #Limit calories from all food items to at most 30% of the total calories
+#           
+#           bvector <- min_req
+#           
+#           ### const.dir
+#           inequality_directions <- c( rep( ">=", length( min_req ) ) )
+#           ####################################################
+#           
+#           library(linprog)
+#           LP <- solveLP( cvec = obj.func, bvec = bvector, Amat = nutrients, 
+#                          const.dir = inequality_directions ) 
+#           
+#           
+#           ############################################################################################
+#           ### OUTPUT ###               
+#           ############################################################################################
+#           LP$opt
+#           LP$solution
+#           ############################################################################################
+# 
+#           
+#           ### Convertin grams output to # of units to purchase ##
+#           ### unfinished
+# 
+#           ### Output total cost of weekly groceries
+#           ### price.per.g * g recommended (at selected_indices)
+#           
+#           ### Recode Output of Lin Prog
+#           #1) Convert grams back to original units (* by )
+#           #2) Convert original units into # of items to purchase and round UP/DOWN?
+#           #       -divide numeric amount of units by numeric amount of one item --># of items
+#           #       -then round 
+#           
+#           cost.units <-
+#             read.csv("Top-Food-Items-Cost-and-Nutritional-Facts-Cost-of-Food-Items-raw.csv")
+#           
+#           class(cost.units)
+#           names(cost.units)
+#           
+#           
+#           library(dplyr)
+#           outputConv <- select(cost.units, 
+#                                Food.Item, 
+#                                Price.per.g, 
+#                                Quantity, 
+#                                Unit, 
+#                                Conversion.to.g)
+#           
+#           head(outputConv)
+#           
+#           
+#           
+#           outputConv$Price.per.g      
+#           ### !!! if you update and load the updated dataset, this will be disasterous
+#           ### outputConv <- mutate( outputConv, Price.per.g = Price.per.g/100)
+#           
+#           #1) Cost per original unit
+#           #with(outputConv, Price.per.g * Conversion.to.g)
+#           
+#           LP$solution / outputConv$Conversion.to.g  
 
 
                 #output$inputValue <- renderPrint({input$sizeFamily})
                 #output$inputValue2 <- renderPrint(2*{input$numChild})
                 output$inputValue3 <- renderPrint({input$food})
-                output$prediction <- renderPrint(cat('Heehee\nhe'))
+                output$prediction <- renderPrint(food)
                 #output$prediction2 <- renderPrint('Heehee2')
                 #output$oid2 <- renderPrint({input$id2})
                 #output$odate <- renderPrint({input$date})
