@@ -33,7 +33,7 @@ shinyServer(
           
           #2) How many adult males, adult females, and children are you shopping for?
           #numericInput
-          
+
           #example answers from user
           # mfc   <- reactiveValues(ppl = c(input$numAdultm,input$numAdultf,input$numChild))
 #           adult.females <- input$numAdultf
@@ -199,13 +199,13 @@ shinyServer(
           LP$solution / outputConv$Conversion.to.g  
 
 
+
                 #output$inputValue <- renderPrint({input$sizeFamily})
                 #output$inputValue2 <- renderPrint(2*{input$numChild})
                 output$inputValue3 <- renderPrint({input$food})
+
           output$prediction <- renderText('beep')
                 # output$prediction <- renderPrint(cat('Heehee\nhe'))
-                #output$prediction2 <- renderPrint('Heehee2')
-                #output$oid2 <- renderPrint({input$id2})
-                #output$odate <- renderPrint({input$date})
+
         }
 )
