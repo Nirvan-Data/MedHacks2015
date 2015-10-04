@@ -1,12 +1,11 @@
 library(shiny)
+
 shinyUI(pageWithSidebar( #gives page format as page with sidebar
                 
                 ####################################
                       ### Application title ###
                 ####################################
                 headerPanel(strong("What's for Dinner?")),
-                
-                
                 
                 
                 ################################
