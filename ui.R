@@ -1,23 +1,17 @@
 library(shiny)
 
 shinyUI(pageWithSidebar( #gives page format as page with sidebar
-                
-                ####################################
                       ### Application title ###
-                ####################################
                 headerPanel(strong("What's for Dinner?")),
                 
-                
-                ################################
                      ### Side Bar Panel ###
-                ################################
                 sidebarPanel( 
                         
                         numericInput('numAdultm', 'Adult Male',0),
                         numericInput('numAdultf', 'Adult Female',0),
                         numericInput('numChild', 'Child',0),
-                        numericInput('budget','Food Budget ($/wk)',10),
-                        checkboxGroupInput('food','food choices: ', c('bread'='bread','rice'= 'rice',
+                        numericInput('budget','Food Budget ($/wk)',40),
+                        checkboxGroupInput('food','food choices (choose 2): ', c('bread'='bread','rice'= 'rice',
                                                                       'pasta'='pasta','cereals'='cereals',
                                                                       'bagels'='bagels','apple'='apple',
                                                                       'orange'='orange','banana'='banana',
@@ -33,11 +27,6 @@ shinyUI(pageWithSidebar( #gives page format as page with sidebar
                                                                       'cheese'='cheese','peanut butter'='peanut butter',
                                                                       'milk'='milk')
                         ), 
-                        #conditionalPanel(
-                        #  condition="input.==true"
-                          #, 
-                          #numericInput("myinput", "My Input:", 0)
-                        #),
                         submitButton('Enter')
                         ),
                         
@@ -48,13 +37,15 @@ shinyUI(pageWithSidebar( #gives page format as page with sidebar
                 mainPanel( 
                         #h3('Main Panel text'),
                         #code('some code'),
-                        h3('An app to help you eat healthy while on a budget.'),
-                        
-                        h3("Recommended Meal Plan"),
+                        h2('An app to help you eat healthy while on a budget!'),
+                        h4('Here\'s what you picked:'),
+                        #picked <- paste(inputValue3[1], inputValue3[2], sep=",")
+                        verbatimTextOutput("inputValue3"),
+                        h3("Recommended Meal Plan:"),
                         #h4("You entered..."),
                         #verbatimTextOutput("inputValue"),
                         #verbatimTextOutput("inputValue2"),
-                        #verbatimTextOutput("inputValue3"),
+                        
                         #h4("Which resulted in a prediction of "),
                         verbatimTextOutput("prediction")
                         #verbatimTextOutput("prediction2")
