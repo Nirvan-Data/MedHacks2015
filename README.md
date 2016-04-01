@@ -25,6 +25,7 @@ http://ndb.nal.usda.gov/ndb/foods
 Linear program (simplex method) is used.
 
 1) Males, Females, and children each have recommended daily values of macronutrients (fat, protein, carbohydrates)
+
 2) Every food item (e.g rice or chicken) contributes a certain number of grams of protein, fat, and carbohydrates per unit of the item.  
 3) Cost/unit of each food item is known
 
