@@ -33,6 +33,7 @@ The optimization algorithm minimizes the cost of feeding a user-specified family
 
 Software Components:
 Backend optimization is done in R. Front-end web application is built using R Shiny.
+
 1) server.R 
 contains the optimization code
 
